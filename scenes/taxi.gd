@@ -1,5 +1,6 @@
 extends CharacterBody2D
 @onready var sprite_2d = $Sprite2D
+@onready var collision_shape_2d = $CollisionShape2D
 
 
 func keyDown(key: String):
@@ -15,29 +16,36 @@ func CircleRange(num):
 		num = (num / 360 - int(num / 360)) * 360
 	return num
 
-func setAnimation(deg, speed):
-	var states = {
-		"right": [deg > 315 or deg < 45, "left", true],
-		"left": [deg < 225 and deg > 135, "left", false],
-		"up": [deg > 225 and deg < 315, "up", false],
-		"down": [deg > 45 and deg < 135, "down", false],
+func changeState(deg, speed):
+	var collisionScale = [
+		[sprite_2d.scale[0] * 1.5, sprite_2d.scale[0] * 2],
+		[sprite_2d.scale[1] * 3.25, sprite_2d.scale[0] * 1.75]
+	]
+	var config = {
+		"right": [deg > 315 or deg < 45, "left", true, 1],
+		"left": [deg < 225 and deg > 135, "left", false, 1],
+		"up": [deg > 225 and deg < 315, "up", false, 0],
+		"down": [deg > 45 and deg < 135, "down", false, 0],
 	}
 	var forward = speed > 0
 	
-	for direction in states:
-		if states[direction][0]:
-			var flip_h = states[direction][2]
-			var anim = states[direction][1]
+	for direction in config:
+		if config[direction][0]:
+			var this = config[direction]
+			var flip_h = this[2]
+			var anim = this[1]
 			
 			if speed != 0: anim = "go_" + anim
 			else: anim = "stand_" + anim
 			sprite_2d.animation = anim
 			sprite_2d.flip_h = flip_h
+			collision_shape_2d.scale[0] = collisionScale[this[3]][0]
+			collision_shape_2d.scale[1] = collisionScale[this[3]][1]
 	
 			
 var angle = 0
 var turn = 2.5
-var MaxSpeed = 400
+var MaxSpeed = 200
 var speed = 0
 var acceleration = MaxSpeed * 0.02
 var deceleration = MaxSpeed * 0.005
@@ -60,7 +68,7 @@ func _physics_process(delta):
 			angle = move_toward(angle, angle - 45, turn)
 		if keyDown("Right"):
 			angle = move_toward(angle, angle + 45, turn)
-	else:
+	elif speed < 0:
 		if keyDown("Left"):
 			angle = move_toward(angle, angle + 45, turn)
 		if keyDown("Right"):
@@ -72,13 +80,14 @@ func _physics_process(delta):
 	# keep the angle between 0 and 360
 	if abs(angle) == 360: angle = 0
 	
-	setAnimation(CircleRange(angle), speed)
+	changeState(CircleRange(angle), speed)
 	
 	if !keyDown("Up") and !keyDown("Down"):
 		speed = move_toward(speed, 0, deceleration)
 	
-	velocity.x = x * speed
-	velocity.y = y * speed
+	velocity.x = x * speed * sprite_2d.scale[0]
+	velocity.y = y * speed * sprite_2d.scale[1]
 	
+	print(collision_shape_2d.scale)
 	
 	move_and_slide()
