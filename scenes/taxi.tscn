@@ -167,6 +167,7 @@ animations = [{
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+scale = Vector2(1.25, 1.25)
 sprite_frames = SubResource("SpriteFrames_6s3mu")
 animation = &"go_left"
 autoplay = "go_left"
