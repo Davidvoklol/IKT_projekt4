@@ -88,6 +88,4 @@ func _physics_process(delta):
 	velocity.x = x * speed * sprite_2d.scale[0]
 	velocity.y = y * speed * sprite_2d.scale[1]
 	
-	print(collision_shape_2d.scale)
-	
 	move_and_slide()
