@@ -18,8 +18,8 @@ func CircleRange(num):
 
 func changeState(deg, speed):
 	var collisionScale = [
-		[sprite_2d.scale[0] * 1.5, sprite_2d.scale[0] * 2],
-		[sprite_2d.scale[1] * 3.25, sprite_2d.scale[0] * 1.75]
+		[sprite_2d.scale[0] * 1.05, sprite_2d.scale[0] * 1.25],
+		[sprite_2d.scale[1] * 2.2, sprite_2d.scale[0] * 0.8]
 	]
 	var config = {
 		"right": [deg > 315 or deg < 45, "left", true, 1],
@@ -35,20 +35,22 @@ func changeState(deg, speed):
 			var flip_h = this[2]
 			var anim = this[1]
 			
-			if speed != 0: anim = "go_" + anim
+			if speed != 0 and !keyDown("HandBreak"): anim = "go_" + anim
+			elif speed != 0 and keyDown("HandBreak"): anim = "break_" + anim
 			else: anim = "stand_" + anim
 			sprite_2d.animation = anim
 			sprite_2d.flip_h = flip_h
 			collision_shape_2d.scale[0] = collisionScale[this[3]][0]
 			collision_shape_2d.scale[1] = collisionScale[this[3]][1]
-	
-			
+				
+
 var angle = 0
 var turn = 2.5
-var MaxSpeed = 200
+var MaxSpeed = 300
 var speed = 0
 var acceleration = MaxSpeed * 0.02
 var deceleration = MaxSpeed * 0.005
+var handBreakScale = 8
 
 func _physics_process(delta):
 	
@@ -57,10 +59,11 @@ func _physics_process(delta):
 	var y = sin( toRad(angle) )
 	
 	# move forwards and backwards
-	if keyDown("Up"):
-		speed = move_toward(speed, MaxSpeed, acceleration)
-	if keyDown("Down"):
-		speed = move_toward(speed, -MaxSpeed / 2, acceleration)
+	if !keyDown("HandBreak"):
+		if keyDown("Up"):
+			speed = move_toward(speed, MaxSpeed, acceleration)
+		if keyDown("Down"):
+			speed = move_toward(speed, -MaxSpeed / 2, acceleration)
 	
 	# turn if the car is moving
 	if speed > 0:
@@ -75,7 +78,7 @@ func _physics_process(delta):
 			angle = move_toward(angle, angle - 45, turn)
 	
 	if keyDown("HandBreak"):
-		speed = move_toward(speed, 0, deceleration * 10)
+		speed = move_toward(speed, 0, handBreakScale)
 	
 	# keep the angle between 0 and 360
 	if abs(angle) == 360: angle = 0
