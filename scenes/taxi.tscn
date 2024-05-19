@@ -204,9 +204,8 @@ animations = [{
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_6s3mu")
-animation = &"go_left"
+animation = &"break_left"
 autoplay = "stand_down"
-frame_progress = 0.958995
 offset = Vector2(-0.5, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
