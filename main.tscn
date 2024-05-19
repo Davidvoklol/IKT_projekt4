@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://ftn83ohfktya"]
 
-[ext_resource type="Texture2D" uid="uid://cw4msbeomrrix" path="res://Assets/Other Sprites/Tilemap/tilemap_packed.png" id="1_kqmy0"]
+[ext_resource type="Texture2D" uid="uid://cw4msbeomrrix" path="res://Assets/Other Sprites/City/tilemap_packed.png" id="1_kqmy0"]
 [ext_resource type="PackedScene" uid="uid://dnwjfm4qef5rf" path="res://scenes/taxi.tscn" id="2_fa41h"]
 [ext_resource type="Script" path="res://scenes/taxi.gd" id="3_chvw5"]
 
