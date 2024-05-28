@@ -2,20 +2,16 @@ extends CharacterBody2D
 @onready var sprite_2d = $Sprite2D
 @onready var collision_shape_2d = $CollisionShape2D
 
-
 func keyDown(key: String):
 	return Input.is_action_pressed(key)
-
 func toRad(deg: float):
 	return (PI / 180) * deg
-
 func CircleRange(deg):
 	if deg < 0:
 		deg = ceil(abs(deg) / 360) * 360 + deg
 	if deg > 360:
 		deg = (deg / 360 - int(deg / 360)) * 360
 	return deg
-
 func WherePoint(deg, accuracy = 0):
 	accuracy = abs(accuracy)
 	if accuracy > 20: accuracy = 20
@@ -24,7 +20,6 @@ func WherePoint(deg, accuracy = 0):
 	if deg >= 225 + accuracy and deg < 315 - accuracy: return "up"
 	if deg >= 315 + accuracy or deg < 45 - accuracy: return "right"
 	return "None"
-
 func SteeringAssist(deg):
 	var pointTo = WherePoint(deg)
 	var target
@@ -34,7 +29,6 @@ func SteeringAssist(deg):
 	elif pointTo == "right" and deg > 180: target = 360
 	else: target = 0
 	angle = move_toward(angle, target, SteerAssistConfig[1])
-
 func changeState(deg, speed):
 	var collisionScale = [
 		[sprite_2d.scale[0] * 1.05, sprite_2d.scale[0] * 1.25],
@@ -60,7 +54,7 @@ func changeState(deg, speed):
 	collision_shape_2d.scale[1] = collisionScale[this[2]][1]
 
 var angle = 0
-var turn = 3
+var turn = 4
 var SteerAssistConfig = [true, turn / 3]
 var MaxSpeed = 300
 var speed = 0
