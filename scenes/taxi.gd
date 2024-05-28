@@ -62,7 +62,7 @@ var acceleration = MaxSpeed * 0.01
 var deceleration = acceleration * 0.5
 var handBreakScale = 8
 
-func _physics_process(delta):
+func _process(delta):
 	
 	# x and y axis speed
 	var x = cos( toRad(angle) )
@@ -92,15 +92,21 @@ func _physics_process(delta):
 	if keyDown("HandBreak"):
 		speed = move_toward(speed, 0, handBreakScale)
 	
-	# keep the angle between 0 and 360
+	var is_colliding = is_on_ceiling() or is_on_wall() or is_on_floor()
+	if is_colliding:
+		speed *= 0.75
 	
+	# animate and staff
 	changeState(angle, speed)
 	
+	# decelerate
 	if !keyDown("Up") and !keyDown("Down"):
 		speed = move_toward(speed, 0, deceleration)
 	
 	velocity.x = x * speed * sprite_2d.scale[0]
 	velocity.y = y * speed * sprite_2d.scale[1]
 	
+	# normalize angle
 	angle = CircleRange(angle)
+	
 	move_and_slide()

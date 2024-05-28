@@ -1,8 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://ftn83ohfktya"]
+[gd_scene load_steps=30 format=3 uid="uid://ftn83ohfktya"]
 
 [ext_resource type="Texture2D" uid="uid://cw4msbeomrrix" path="res://Assets/Other Sprites/City/tilemap_packed.png" id="1_kqmy0"]
 [ext_resource type="PackedScene" uid="uid://dnwjfm4qef5rf" path="res://scenes/taxi.tscn" id="2_fa41h"]
 [ext_resource type="Script" path="res://scenes/taxi.gd" id="3_chvw5"]
+[ext_resource type="PackedScene" uid="uid://bha5f0qyyh4xx" path="res://scenes/npc.tscn" id="4_talrr"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_5b18k"]
 tile_data = PackedInt32Array(0, 2031616, 10, 65536, 2031616, 11)
@@ -3992,6 +3993,11 @@ pattern_19 = SubResource("TileMapPattern_vg1qr")
 pattern_20 = SubResource("TileMapPattern_iw81w")
 pattern_21 = SubResource("TileMapPattern_4naqp")
 
+[sub_resource type="GDScript" id="GDScript_0org1"]
+script/source = "extends CharacterBody2D
+@onready var animated_sprite_2d = $AnimatedSprite2D
+"
+
 [node name="Node" type="Node"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -4022,6 +4028,11 @@ layer_1/tile_data = PackedInt32Array(-1441807, 1310720, 2, -1376271, 1245184, 3,
 layer_2/name = "other2"
 layer_2/tile_data = PackedInt32Array(-65550, 1572864, 15, -589838, 1835008, 14, -720909, 1572864, 16, 131061, 1703936, 16, 131058, 1703936, 16, -131083, 1703936, 16, -131086, 1703936, 16, -393227, 1703936, 16, -393230, 1703936, 16, -655371, 1703936, 16, -655374, 1703936, 16, -1048585, 1835008, 18, -983049, 1835008, 19, -1048587, 1835008, 18, -983051, 1835008, 19, -1048590, 1835008, 18, -983054, 1835008, 19, -1048588, 1835008, 18, -983052, 1835008, 19, -1179657, 1835008, 18, -1179659, 1835008, 18, -1179660, 1835008, 18, -1179662, 1835008, 18, -1376267, 1966080, 14, -1376268, 1966080, 14)
 
-[node name="CharacterBody2D" parent="CanvasLayer/HBoxContainer" instance=ExtResource("2_fa41h")]
+[node name="Taxi" parent="CanvasLayer/HBoxContainer" instance=ExtResource("2_fa41h")]
 position = Vector2(-507, -229)
 script = ExtResource("3_chvw5")
+
+[node name="npc" parent="CanvasLayer/HBoxContainer" instance=ExtResource("4_talrr")]
+position = Vector2(-103, 5)
+collision_layer = 2
+script = SubResource("GDScript_0org1")
